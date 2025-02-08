@@ -1,8 +1,7 @@
 import axios from "axios";
 
-const fetch = params => axios.get("movies", { params });
+const fetch = searchKey => axios.get("", { params: { s: searchKey } });
 
-const show = slug => axios.get(`products/${slug}`);
+const movieApi = { fetch };
 
-const productsApi = { show, fetch };
-export default productsApi;
+export default movieApi;
