@@ -1,24 +1,14 @@
+import { Switch, Redirect, Route } from "react-router-dom";
+import Home from "src/components/Home";
+
 import "./App.css";
 // eslint-disable-next-line import/extensions
-import logo from "./logo.svg";
 
 const App = () => (
-  <div className="App">
-    <header className="App-header">
-      <img alt="logo" className="App-logo" src={logo} />
-      <p>
-        Edit <code>src/App.js</code> and save to reload.
-      </p>
-      <a
-        className="App-link"
-        href="https://reactjs.org"
-        rel="noopener noreferrer"
-        target="_blank"
-      >
-        Learn React
-      </a>
-    </header>
-  </div>
+  <Switch>
+    <Route component={Home} path="/home" />
+    <Redirect from="/" to="/home" />
+  </Switch>
 );
 
 export default App;
