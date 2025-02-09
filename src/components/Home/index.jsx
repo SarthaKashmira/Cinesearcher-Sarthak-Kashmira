@@ -1,7 +1,6 @@
 import { useState } from "react";
 
-import Header from "components/commons/Header";
-import PageLoader from "components/commons/Pageloader";
+import { Header, PageLoader } from "components/commons";
 import MovieCard from "components/MovieCard";
 import { useMoviesApi } from "hooks/reactQuery/useMoviesApi";
 import useDebounce from "hooks/useDebounce";
@@ -9,16 +8,17 @@ import { Search } from "neetoicons";
 import { Input, Toastr } from "neetoui";
 
 const Home = () => {
-  const [searchKey, setSearchKey] = useState("");
+  const [searchKey, setSearchKey] = useState("Spider Man");
   const debouncedSearchKey = useDebounce(searchKey);
 
   const { data: movies = {}, isLoading } = useMoviesApi(debouncedSearchKey);
-  console.log(movies);
 
   if (isLoading) return <PageLoader />;
 
   if (movies?.Response === "False") {
-    Toastr.error(movies.Error, { autoClose: 2000 });
+    if (searchKey.length <= 2) {
+      Toastr.error("Please enter more than 2 letters.", { autoClose: 2000 });
+    }
   }
 
   return (
