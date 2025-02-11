@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const fetch = searchKey => axios.get("", { params: { s: searchKey } });
+const fetch = params => axios.get("", { params });
 const show = imdbID => axios.get("", { params: { i: imdbID } });
 const movieApi = { fetch, show };
 
