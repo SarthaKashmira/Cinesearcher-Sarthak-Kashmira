@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 import { Header, PageLoader } from "components/commons";
 import MovieCard from "components/MovieCard";
@@ -14,13 +14,13 @@ const Home = () => {
 
   const { data: movies = {}, isLoading } = useMoviesApi(debouncedSearchKey);
 
-  if (isLoading) return <PageLoader />;
-
-  if (movies?.Response === "False") {
-    if (searchKey.length <= 2) {
-      Toastr.error("Please enter more than 2 letters.", { autoClose: 2000 });
+  useEffect(() => {
+    if (movies?.Response === "False") {
+      Toastr.error(movies.Error, { autoClose: 2000 });
     }
-  }
+  }, [movies]);
+
+  if (isLoading) return <PageLoader />;
 
   return (
     <div className="flex h-screen">
