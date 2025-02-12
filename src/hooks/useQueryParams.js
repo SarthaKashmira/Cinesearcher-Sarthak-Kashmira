@@ -1,10 +1,10 @@
 import { keysToCamelCase } from "neetocist";
 import { parse } from "qs";
-import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
+import { useLocation } from "react-router-dom";
 
 const useQueryParams = () => {
-  const history = useHistory();
-  const queryParams = parse(history.location.search, {
+  const location = useLocation();
+  const queryParams = parse(location.search, {
     ignoreQueryPrefix: true,
   });
 
