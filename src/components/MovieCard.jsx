@@ -43,7 +43,7 @@ const MovieCard = ({ movie }) => {
         >
           View details
         </Button>
-        <MovieModal {...{ isOpen, setIsOpen, movie }} />
+        {isOpen && <MovieModal {...{ isOpen, setIsOpen, movie }} />}
       </div>
     </div>
   );
