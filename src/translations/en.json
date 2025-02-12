@@ -1,0 +1,16 @@
+{
+  "modal": {
+    "description": "{{Plot}}",
+    "director": "<typography>Director : </typography>{{Director}}",
+    "actor": "<typography>Actors : </typography>{{Actors}}",
+    "boxOffice": "<typography>Box Office : </typography>{{BoxOffice}}",
+    "year": "<typography>Year : </typography>{{Year}}",
+    "runtime": "<typography>Runtime : </typography>{{Runtime}}",
+    "language": "<typography>Language : </typography>{{Language}}",
+    "rated": "<typography>Rated : </typography>{{Rated}}"
+  },
+  "movieCard": {
+    "Title": "{{Title}}",
+    "year": "{{Movie}} • {{Year}}"
+  }
+}

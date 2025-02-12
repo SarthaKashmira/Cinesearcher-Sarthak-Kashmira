@@ -1,6 +1,7 @@
 import { PageLoader } from "components/commons";
 import { useMovieInformation } from "hooks/reactQuery/useMovieInformation";
 import { Modal, Typography } from "neetoui";
+import { Trans } from "react-i18next";
 import { fetchMoviePoster } from "utils/movie";
 
 import { fetchGenres } from "./utils";
@@ -55,31 +56,58 @@ const MovieModal = ({ isOpen, movie, setIsOpen }) => {
         <div className="ml-0 mt-4 flex flex-grow flex-col md:ml-6 md:mt-0">
           {/* Description here. */}
           <Typography class="mb-4 leading-relaxed text-gray-700">
-            {Plot}
+            <Trans i18nKey="modal.description" values={{ Plot }} />
           </Typography>
           {/* Other information here. */}
           <div className="space-y-1 text-sm text-gray-600">
             <Typography>
-              <strong>Director: {Director}</strong>
+              <Trans
+                components={{ typography: <strong /> }}
+                i18nKey="modal.director"
+                values={{ Director }}
+              />
             </Typography>
             <Typography>
-              <strong>Actors:</strong> {Actors}
+              <Trans
+                components={{ typography: <strong /> }}
+                i18nKey="modal.actor"
+                values={{ Actors }}
+              />
             </Typography>
             <Typography>
-              <strong>Box Office:</strong> {BoxOffice}
+              <Trans
+                components={{ typography: <strong /> }}
+                i18nKey="modal.boxOffice"
+                values={{ BoxOffice }}
+              />
             </Typography>
             <Typography>
-              <strong>Year:</strong>
-              {Year}
+              <Trans
+                components={{ typography: <strong /> }}
+                i18nKey="modal.year"
+                values={{ Year }}
+              />
             </Typography>
             <Typography>
-              <strong>Runtime:</strong> {Runtime}
+              <Trans
+                components={{ typography: <strong /> }}
+                i18nKey="modal.runtime"
+                values={{ Runtime }}
+              />
             </Typography>
             <Typography>
-              <strong>Language:</strong> {Language}
+              <Trans
+                components={{ typography: <strong /> }}
+                i18nKey="modal.language"
+                values={{ Language }}
+              />
             </Typography>
             <Typography>
-              <strong>Rated:</strong> {Rated}
+              <Trans
+                components={{ typography: <strong /> }}
+                i18nKey="modal.rated"
+                values={{ Rated }}
+              />
             </Typography>
           </div>
         </div>
