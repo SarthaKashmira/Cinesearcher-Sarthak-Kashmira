@@ -6,7 +6,6 @@ import useViewMoviesHistory from "stores/useViewMoviesHistory";
 import { fetchMoviePoster } from "utils/movie";
 
 const MovieCard = ({ movie }) => {
-  console.log(movie);
   const [isOpen, setIsOpen] = useState(false);
 
   const setMovieHistory = useViewMoviesHistory(store => store.setMovieHistory);

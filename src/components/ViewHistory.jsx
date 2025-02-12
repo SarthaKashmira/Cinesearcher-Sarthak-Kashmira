@@ -16,7 +16,7 @@ const ViewHistory = () => {
     shallow
   );
 
-  // This is used to peform smooth scrolling of the container
+  // This is used to perform smooth scrolling of the container
   const smoothScrolling = () => {
     const container = containerRef.current;
     const { imdbID } = recentMovie;
