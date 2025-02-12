@@ -1,51 +1,66 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 
-import { Header, PageLoader } from "components/commons";
+import { Header, PageLoader, PageNotFound } from "components/commons";
 import MovieCard from "components/MovieCard";
 import ViewHistory from "components/ViewHistory";
 import { useMoviesApi } from "hooks/reactQuery/useMoviesApi";
-import useFuncDebounce from "hooks/useFuncDebounce";
-import useQueryParams from "hooks/useQueryParams";
-import { filterNonNull } from "neetocist";
+import useDebounce from "hooks/useDebounce";
 import { Search } from "neetoicons";
 import { Input, Pagination, Toastr } from "neetoui";
-import { mergeLeft } from "ramda";
-import { useHistory } from "react-router-dom";
-import { routes } from "routes";
-import { buildUrl } from "utils/url";
 
 import { DEFAULT_PAGE_SIZE, DEFAULT_PAGE_NUMBER } from "./constants";
 
 const Home = () => {
-  const history = useHistory();
+  // useHistory Api for changing the urls as per the query params
+  // const history = useHistory();
+  // const queryParams = useQueryParams();
+  // const { page, s } = queryParams;
+  // console.log(queryParams);
 
-  const queryParams = useQueryParams();
-  console.log(queryParams);
-  const { page, s } = queryParams;
-
-  const [searchKey, setSearchKey] = useState(s);
-
+  const [searchKey, setSearchKey] = useState("");
+  const [currentPage, setCurrentPage] = useState(DEFAULT_PAGE_NUMBER);
+  const debouncedSearch = useDebounce(searchKey);
+  // using useRef here for referring to the input field
+  const inputRef = useRef(null);
+  // custom hook for fetching the data from the api
   const { data: movies = {}, isLoading } = useMoviesApi({
-    s,
-    page: Number(page) || DEFAULT_PAGE_NUMBER,
+    s: debouncedSearch,
+    page: currentPage || DEFAULT_PAGE_NUMBER,
   });
 
-  const updateQueryParams = useFuncDebounce(value => {
-    const params = {
-      page: DEFAULT_PAGE_NUMBER,
-      s: value || null,
-    };
-    history.replace(buildUrl(routes.home, filterNonNull(params)));
-  });
+  // to update the query params whenever the user in writing something for the search key.
+  // const updateQueryParams = useFuncDebounce(value => {
+  //   const params = {
+  //     page: DEFAULT_PAGE_NUMBER,
+  //     s: value || null,
+  //   };
+  //   history.replace(buildUrl(routes.home, filterNonNull(params)));
+  // });
 
-  const handlePageNavigation = page =>
-    history.replace(buildUrl(routes.home, mergeLeft({ page }, queryParams)));
+  // to handle the update of query params when page changes
+  const handlePageNavigation = page => {
+    // history.replace(buildUrl(routes.home, mergeLeft({ page }, queryParams)));
+    setCurrentPage(page);
+  };
 
   useEffect(() => {
     if (movies?.Response === "False") {
       Toastr.error(movies.Error, { autoClose: 2000 });
     }
   }, [movies]);
+
+  useEffect(() => {
+    const handleKeyPress = event => {
+      if (event.key) {
+        inputRef.current?.focus();
+      }
+    };
+    window.addEventListener("keydown", handleKeyPress);
+
+    return () => {
+      window.removeEventListener("keydown", handleKeyPress);
+    };
+  }, []);
 
   if (isLoading) return <PageLoader />;
 
@@ -59,11 +74,13 @@ const Home = () => {
                 <Input
                   placeholder="Search products"
                   prefix={<Search />}
+                  ref={inputRef}
                   type="search"
                   value={searchKey}
                   onChange={({ target: { value } }) => {
-                    updateQueryParams(value);
+                    // updateQueryParams(value);
                     setSearchKey(value);
+                    setCurrentPage(DEFAULT_PAGE_NUMBER);
                   }}
                 />
               }
@@ -71,6 +88,7 @@ const Home = () => {
           </div>
           <div className="mx-auto max-w-6xl">
             <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+              {!movies.Search && <PageNotFound description="No data to show" />}
               {movies?.Search?.map(movie => {
                 const { imdbID } = movie;
 
@@ -84,7 +102,7 @@ const Home = () => {
           <Pagination
             count={movies.totalResults}
             navigate={handlePageNavigation}
-            pageNo={page || DEFAULT_PAGE_NUMBER}
+            pageNo={currentPage || DEFAULT_PAGE_NUMBER}
             pageSize={DEFAULT_PAGE_SIZE}
           />
         </div>

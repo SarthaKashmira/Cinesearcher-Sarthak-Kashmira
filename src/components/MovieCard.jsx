@@ -2,12 +2,13 @@ import { useState } from "react";
 
 import MovieModal from "components/MovieModal";
 import { Button } from "neetoui";
+import { useTranslation } from "react-i18next";
 import useViewMoviesHistory from "stores/useViewMoviesHistory";
 import { fetchMoviePoster } from "utils/movie";
 
 const MovieCard = ({ movie }) => {
   const [isOpen, setIsOpen] = useState(false);
-
+  const { t } = useTranslation();
   const setMovieHistory = useViewMoviesHistory(store => store.setMovieHistory);
 
   const { Poster, Year, Title, imdbID } = movie;
@@ -27,9 +28,11 @@ const MovieCard = ({ movie }) => {
       />
       {/* Movie Title */}
       <div className="mt-4">
-        <h3 className="text-lg font-semibold text-gray-800">{Title}</h3>
+        <h3 className="text-lg font-semibold text-gray-800">
+          {t("movieCard.Title", { Title })}
+        </h3>
         <p className="mt-1 text-sm text-gray-500">
-          {movie.Type.toUpperCase()} • {Year}
+          {t("movieCard.year", { Movie: movie.Type.toUpperCase(), Year })}
         </p>
       </div>
       {/* View Details Button */}
