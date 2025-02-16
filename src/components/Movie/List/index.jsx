@@ -66,20 +66,17 @@ const List = () => {
       <div className="flex flex-1 flex-col">
         <div className="m-2">
           <div className="mx-auto max-w-6xl">
-            <Header
-              actionBlock={
-                <Input
-                  placeholder="Search products"
-                  prefix={<Search />}
-                  ref={inputRef}
-                  type="search"
-                  value={searchKey}
-                  onChange={({ target: { value } }) => {
-                    updateQueryParams(value);
-                    setSearchKey(value);
-                  }}
-                />
-              }
+            <Header />
+            <Input
+              placeholder="Search products"
+              prefix={<Search />}
+              ref={inputRef}
+              type="search"
+              value={searchKey}
+              onChange={({ target: { value } }) => {
+                updateQueryParams(value);
+                setSearchKey(value);
+              }}
             />
           </div>
           <div className="mx-auto flex max-w-6xl items-center justify-center">
