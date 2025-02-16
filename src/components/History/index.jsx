@@ -3,7 +3,7 @@ import { useEffect, useRef } from "react";
 import useViewMoviesHistory from "stores/useViewMoviesHistory";
 import { shallow } from "zustand/shallow";
 
-const ViewHistory = () => {
+const History = () => {
   // to refer the container
   const containerRef = useRef(null);
 
@@ -40,22 +40,26 @@ const ViewHistory = () => {
       <h1 className="mb-4 text-center text-xl font-bold">View History</h1>
       {/* Scrollable Container */}
       <div className="h-screen space-y-3 overflow-y-auto" ref={containerRef}>
-        {moviesHistory.map(item => (
-          <div
-            data-key={item.imdbID}
-            key={item.imdbID}
-            className={`cursor-pointer rounded-lg p-4 text-center transition-colors duration-200 ${
-              item.imdbID === recentMovie.imdbID
-                ? "bg-selectViewHistory text-white"
-                : "bg-viewHistory text-black"
-            }`}
-          >
-            {item.Title}
-          </div>
-        ))}
+        {moviesHistory.map(item => {
+          const { imdbID, Title } = item;
+
+          return (
+            <div
+              data-key={imdbID}
+              key={imdbID}
+              className={`cursor-pointer rounded-lg p-4 text-center transition-colors duration-200 ${
+                imdbID === recentMovie.imdbID
+                  ? "bg-selectViewHistory text-white"
+                  : "bg-viewHistory text-black"
+              }`}
+            >
+              {Title}
+            </div>
+          );
+        })}
       </div>
     </div>
   );
 };
 
-export default ViewHistory;
+export default History;

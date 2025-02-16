@@ -1,13 +1,7 @@
 {
   "modal": {
-    "description": "{{Plot}}",
-    "director": "<typography>Director : </typography>{{Director}}",
-    "actor": "<typography>Actors : </typography>{{Actors}}",
-    "boxOffice": "<typography>Box Office : </typography>{{BoxOffice}}",
-    "year": "<typography>Year : </typography>{{Year}}",
-    "runtime": "<typography>Runtime : </typography>{{Runtime}}",
-    "language": "<typography>Language : </typography>{{Language}}",
-    "rated": "<typography>Rated : </typography>{{Rated}}"
+    "detail": "<typography>{{label}} : </typography>{{value}}",
+    "genre": "<typography className='rounded-full bg-gray-200 px-3 py-1 text-sm text-gray-600'>{{genre}}</typography>"
   },
   "movieCard": {
     "Title": "{{Title}}",
