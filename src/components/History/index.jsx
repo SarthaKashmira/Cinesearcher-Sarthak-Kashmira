@@ -8,13 +8,16 @@ const History = () => {
   const containerRef = useRef(null);
 
   // to take the movies present in the store
-  const { moviesHistory, recentMovie } = useViewMoviesHistory(
-    store => ({
-      moviesHistory: store.moviesHistory,
-      recentMovie: store.recentMovie,
-    }),
-    shallow
-  );
+  const { moviesHistory, recentMovie, setRemoveOneMovie, setRemoveAllMovies } =
+    useViewMoviesHistory(
+      store => ({
+        moviesHistory: store.moviesHistory,
+        recentMovie: store.recentMovie,
+        setRemoveOneMovie: store.setRemoveOneMovie,
+        setRemoveAllMovies: store.setRemoveAllMovies,
+      }),
+      shallow
+    );
 
   // This is used to perform smooth scrolling of the container
   const smoothScrolling = () => {
@@ -37,7 +40,15 @@ const History = () => {
   return (
     <div className="mx-auto  mt-1 w-full max-w-md rounded-lg border bg-white p-4 shadow-lg">
       {/* Title */}
-      <h1 className="mb-4 text-center text-xl font-bold">View History</h1>
+      <div className="mb-4 flex items-center justify-between">
+        <h1 className="text-xl font-bold">View History</h1>
+        <button
+          className="rounded bg-transparent p-2 text-red-500"
+          onClick={() => setRemoveAllMovies()}
+        >
+          Clear All
+        </button>
+      </div>
       {/* Scrollable Container */}
       <div className="h-screen space-y-3 overflow-y-auto" ref={containerRef}>
         {moviesHistory.map(item => {
@@ -47,13 +58,19 @@ const History = () => {
             <div
               data-key={imdbID}
               key={imdbID}
-              className={`cursor-pointer rounded-lg p-4 text-center transition-colors duration-200 ${
+              className={`flex cursor-pointer items-center justify-between rounded-lg p-4 text-center transition-colors duration-200 ${
                 imdbID === recentMovie.imdbID
                   ? "bg-selectViewHistory text-white"
                   : "bg-viewHistory text-black"
               }`}
             >
-              {Title}
+              <span>{Title}</span>
+              <button
+                className="rounded bg-transparent p-2 text-red-500"
+                onClick={() => setRemoveOneMovie({ Title, imdbID })}
+              >
+                Delete
+              </button>
             </div>
           );
         })}
