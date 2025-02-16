@@ -1,14 +1,14 @@
 import { useState, useEffect, useRef } from "react";
 
 import { Header, PageLoader, PageNotFound } from "components/commons";
-import MovieCard from "components/MovieCard";
-import ViewHistory from "components/ViewHistory";
-import { useMoviesApi } from "hooks/reactQuery/useMoviesApi";
+import ViewHistory from "components/History";
+import MovieCard from "components/Movie/Card";
+import { useFetchMovies } from "hooks/reactQuery/useFetchMovies";
 import useFuncDebounce from "hooks/useFuncDebounce";
 import useQueryParams from "hooks/useQueryParams";
 import { filterNonNull } from "neetocist";
 import { Search } from "neetoicons";
-import { Input, Pagination, Toastr } from "neetoui";
+import { Input, Pagination } from "neetoui";
 import { mergeLeft } from "ramda";
 import { useHistory } from "react-router-dom";
 import { routes } from "routes";
@@ -16,7 +16,7 @@ import { buildUrl } from "utils/url";
 
 import { DEFAULT_PAGE_SIZE, DEFAULT_PAGE_NUMBER } from "./constants";
 
-const Home = () => {
+const List = () => {
   // useHistory Api for changing the urls as per the query params
   const history = useHistory();
   const queryParams = useQueryParams();
@@ -27,7 +27,7 @@ const Home = () => {
   // using useRef here for referring to the input field
   const inputRef = useRef(null);
   // custom hook for fetching the data from the api
-  const { data: movies = {}, isLoading } = useMoviesApi({
+  const { data: movies = {}, isLoading } = useFetchMovies({
     s,
     page: page || DEFAULT_PAGE_NUMBER,
   });
@@ -45,12 +45,6 @@ const Home = () => {
   const handlePageNavigation = page => {
     history.replace(buildUrl(routes.home, mergeLeft({ page }, queryParams)));
   };
-
-  useEffect(() => {
-    if (movies?.Response === "False") {
-      Toastr.error(movies.Error, { autoClose: 2000 });
-    }
-  }, [movies]);
 
   useEffect(() => {
     const handleKeyPress = event => {
@@ -121,4 +115,4 @@ const Home = () => {
   );
 };
 
-export default Home;
+export default List;
