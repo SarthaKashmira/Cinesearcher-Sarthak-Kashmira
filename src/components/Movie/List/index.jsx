@@ -3,7 +3,7 @@ import { useState, useEffect, useRef } from "react";
 import { Header, PageLoader, PageNotFound } from "components/commons";
 import ViewHistory from "components/History";
 import MovieCard from "components/Movie/Card";
-import FilterDropdown from "components/Movie/FilterDropDown";
+import FilterDropdown from "components/Movie/FilterDropdown";
 import { useFetchMovies } from "hooks/reactQuery/useFetchMovies";
 import useFuncDebounce from "hooks/useFuncDebounce";
 import useQueryParams from "hooks/useQueryParams";
