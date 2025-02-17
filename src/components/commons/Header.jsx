@@ -24,7 +24,7 @@ const Header = ({ activeTab }) => {
         ))}
       </div>
       {/* Navigation Tabs */}
-      <div className="flex flex-grow justify-center space-x-6">
+      <div className="ml-10 flex flex-grow space-x-6">
         <Link to={routes.home}>
           <Button
             style="link"
