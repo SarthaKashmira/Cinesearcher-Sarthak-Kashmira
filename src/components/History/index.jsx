@@ -4,8 +4,7 @@ import { Delete } from "neetoicons";
 import { Button, Label } from "neetoui";
 import { isEmpty } from "ramda";
 import { useTranslation } from "react-i18next";
-import useViewMoviesHistory from "stores/useViewMoviesHistory";
-import { shallow } from "zustand/shallow";
+import useViewMoviesHistoryStore from "stores/useViewMoviesHistoryStore";
 
 const History = () => {
   const { t } = useTranslation();
@@ -14,15 +13,7 @@ const History = () => {
 
   // to take the movies present in the store
   const { moviesHistory, recentMovie, setRemoveOneMovie, setRemoveAllMovies } =
-    useViewMoviesHistory(
-      store => ({
-        moviesHistory: store.moviesHistory,
-        recentMovie: store.recentMovie,
-        setRemoveOneMovie: store.setRemoveOneMovie,
-        setRemoveAllMovies: store.setRemoveAllMovies,
-      }),
-      shallow
-    );
+    useViewMoviesHistoryStore.pick();
 
   // This is used to perform smooth scrolling of the container
   const smoothScrolling = () => {

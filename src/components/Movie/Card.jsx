@@ -3,13 +3,13 @@ import { useState } from "react";
 import MovieModal from "components/Movie/Modal";
 import { Button } from "neetoui";
 import { Trans } from "react-i18next";
-import useViewMoviesHistory from "stores/useViewMoviesHistory";
+import useViewMoviesHistoryStore from "stores/useViewMoviesHistoryStore";
 import { fetchMoviePoster } from "utils/movie";
 
 const Card = ({ movie }) => {
   const [isOpen, setIsOpen] = useState(false);
 
-  const setMovieHistory = useViewMoviesHistory(store => store.setMovieHistory);
+  const setMovieHistory = useViewMoviesHistoryStore.pickFrom();
 
   const { Poster, Year, Title, imdbID, Type } = movie;
 

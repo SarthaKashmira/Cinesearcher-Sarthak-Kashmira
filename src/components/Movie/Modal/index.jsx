@@ -3,7 +3,7 @@ import { useShowMovie } from "hooks/reactQuery/useShowMovie";
 import { Rating, RatingFilled } from "neetoicons";
 import { Button, Modal, Typography } from "neetoui";
 import { Trans, useTranslation } from "react-i18next";
-import useFavoriteMovies from "stores/useFavoriteMovies";
+import useFavoriteMoviesStore from "stores/useFavoriteMoviesStore";
 import { fetchMoviePoster } from "utils/movie";
 
 import { checkFavoriteMovie, fetchGenres } from "./utils";
@@ -14,12 +14,8 @@ const MovieModal = ({ isOpen, movie, setIsOpen }) => {
   const { imdbID } = movie;
 
   const { data: movieInformation = {}, isLoading } = useShowMovie(imdbID);
-  const { favoriteMovies = [], setFavoriteMovie } = useFavoriteMovies(
-    store => ({
-      favoriteMovies: store.favoriteMovies,
-      setFavoriteMovie: store.setFavoriteMovie,
-    })
-  );
+  const { favoriteMovies = [], setFavoriteMovie } =
+    useFavoriteMoviesStore.pick();
 
   const {
     Poster,
