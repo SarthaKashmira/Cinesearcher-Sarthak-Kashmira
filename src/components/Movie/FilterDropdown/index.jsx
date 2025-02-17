@@ -25,15 +25,13 @@ const FilterDropdown = () => {
   const history = useHistory();
 
   const queryParams = useQueryParams();
-
+  const { type, searchTerm } = queryParams;
   const filterTypes = [
     { id: "movie", label: t("labels.movie") },
     { id: "series", label: t("labels.series") },
   ];
 
-  const selectedTypes = queryParams.type
-    ? queryParams.type.split(",")
-    : DEFAULT_TYPES;
+  const selectedTypes = !type ? DEFAULT_TYPES : type.split(",");
 
   const handleYearChange = value => {
     const params = {
@@ -70,7 +68,7 @@ const FilterDropdown = () => {
   };
 
   useEffect(() => {
-    if (!queryParams.type) {
+    if (!queryParams.type && searchTerm) {
       history.replace(
         buildUrl(routes.home, {
           ...queryParams,
@@ -139,12 +137,12 @@ const FilterDropdown = () => {
               }}
             />
             <div className="space-y-3">
-              {filterTypes.map(filterType => (
+              {filterTypes.map(({ id, label }) => (
                 <Checkbox
-                  checked={selectedTypes.includes(filterType.id)}
-                  key={filterType.id}
-                  label={filterType.label}
-                  onChange={() => handleTypeChange(filterType.id)}
+                  checked={selectedTypes.includes(id)}
+                  key={id}
+                  {...{ label }}
+                  onChange={() => handleTypeChange(id)}
                 />
               ))}
             </div>
