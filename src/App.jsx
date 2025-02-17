@@ -1,17 +1,17 @@
-import { PageLoader } from "components/commons";
-import Favourites from "components/Favourites";
+import { PageNotFound } from "components/commons";
+import Favorites from "components/Favorites";
 import List from "components/Movie/List";
 import { Switch, Redirect, Route } from "react-router-dom";
+import { routes } from "routes";
 
 import "./App.css";
-// eslint-disable-next-line import/extensions
 
 const App = () => (
   <Switch>
-    <Route component={List} path="/home" />
-    <Route component={Favourites} path="/favourite" />
-    <Redirect from="/" to="/home" />
-    <Route component={PageLoader} path="*" />
+    <Route component={List} path={routes.home} />
+    <Route component={Favorites} path={routes.favorite} />
+    <Redirect from="/" to={routes.home} />
+    <Route component={PageNotFound} path="*" />
   </Switch>
 );
 

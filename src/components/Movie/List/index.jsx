@@ -10,6 +10,7 @@ import { filterNonNull } from "neetocist";
 import { Search } from "neetoicons";
 import { Input, Pagination } from "neetoui";
 import { mergeLeft } from "ramda";
+import { useTranslation } from "react-i18next";
 import { useHistory } from "react-router-dom";
 import { routes } from "routes";
 import { buildUrl } from "utils/url";
@@ -20,14 +21,19 @@ import FilterDropdown from "../Filter";
 
 const List = () => {
   // useHistory Api for changing the urls as per the query params
-  const history = useHistory();
-  const queryParams = useQueryParams();
-  const { page, searchTerm: s, year: y, type } = queryParams;
-
   const [searchKey, setSearchKey] = useState("");
 
   // using useRef here for referring to the input field
   const inputRef = useRef(null);
+
+  const { t } = useTranslation();
+
+  const history = useHistory();
+
+  const queryParams = useQueryParams();
+
+  const { page, searchTerm: s, year: y, type } = queryParams;
+
   // custom hook for fetching the data from the api
   const { data: movies = {}, isLoading } = useFetchMovies({
     s,
@@ -53,7 +59,7 @@ const List = () => {
 
   useEffect(() => {
     const handleKeyPress = event => {
-      if (event.key) {
+      if (event.key === "/") {
         inputRef.current?.focus();
       }
     };
@@ -71,7 +77,7 @@ const List = () => {
       <div className="flex flex-1 flex-col">
         <div className="m-2">
           <div className="mx-auto max-w-6xl">
-            <Header />
+            <Header activeTab="Home" />
           </div>
           <div className="flex p-0">
             <Input
@@ -90,7 +96,10 @@ const List = () => {
           <div className="mx-auto flex max-w-6xl items-center justify-center">
             {!movies.Search ? (
               <div className="flex h-full items-center justify-center">
-                <PageNotFound description="No data to show" />
+                <PageNotFound
+                  description={t("error.noMovie")}
+                  returnHome={false}
+                />
               </div>
             ) : (
               <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">

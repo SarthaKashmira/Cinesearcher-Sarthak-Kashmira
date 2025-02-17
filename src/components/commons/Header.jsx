@@ -1,43 +1,54 @@
-import { useState } from "react";
-
+import classNames from "classnames";
+import { Button } from "neetoui";
+import { Trans } from "react-i18next";
 import { Link } from "react-router-dom";
+import { routes } from "routes";
 
-const Header = () => {
-  const [activeTab, setActiveTab] = useState("Home");
+const Header = ({ activeTab }) => {
+  const brand = [
+    { color: "text-blue-600", value: "Cine" },
+    { color: "text-black", value: "Searcher" },
+  ];
 
   return (
-    <nav className="sticky top-0 flex w-full items-center justify-between bg-white p-4 shadow-md">
+    <div className="sticky top-0 flex w-full items-center justify-between bg-white p-4 shadow-md">
       {/* Logo */}
       <div className="text-xl font-bold">
-        <span className="text-blue-600">Cine</span>
-        <span className="text-black">Searcher</span>
+        {brand.map(({ color, value }) => (
+          <Trans
+            components={{ typography: <span className={color} /> }}
+            i18nKey="brand.name"
+            key={value}
+            values={{ value }}
+          />
+        ))}
       </div>
       {/* Navigation Tabs */}
       <div className="flex flex-grow justify-center space-x-6">
-        <Link to="/">
-          <button
-            className={`text-lg ${
-              activeTab === "Home" ? "font-bold text-blue-600" : "text-gray-700"
-            }`}
-            onClick={() => setActiveTab("Home")}
+        <Link to={routes.home}>
+          <Button
+            style="link"
+            className={classNames("text-lg", {
+              "font-bold text-blue-600": activeTab === "Home",
+              "text-gray-700": activeTab !== "Home",
+            })}
           >
             Home
-          </button>
+          </Button>
         </Link>
-        <Link to="/favourite">
-          <button
-            className={`text-lg ${
-              activeTab === "Favourites"
-                ? "font-bold text-blue-600"
-                : "text-gray-700"
-            }`}
-            onClick={() => setActiveTab("Favourites")}
+        <Link to={routes.favorite}>
+          <Button
+            style="link"
+            className={classNames("text-lg", {
+              "font-bold text-blue-600": activeTab === "Favorites",
+              "text-gray-700": activeTab !== "Favorites",
+            })}
           >
-            Favourites
-          </button>
+            Favorites
+          </Button>
         </Link>
       </div>
-    </nav>
+    </div>
   );
 };
 export default Header;

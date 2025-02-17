@@ -1,17 +1,32 @@
 {
   "modal": {
     "detail": "<typography>{{label}} : </typography>{{value}}",
-    "genre": "<typography className='rounded-full bg-gray-200 px-3 py-1 text-sm text-gray-600'>{{genre}}</typography>"
+    "genre": "<typography>{{genre}}</typography>",
+    "addFavorite": "Add to favorites",
+    "removeFavorite": "Remove from favorites"
   },
   "movieCard": {
-    "Title": "{{Title}}",
-    "year": "{{Movie}} • {{Year}}"
+    "Title": "<typography>{{Title}}</typography>",
+    "year": "<typography>{{Movie}} • {{Year}}</typography>"
+  },
+  "history": {
+    "viewHistory": "View history",
+    "clearAll": "Clear all"
   },
   "labels": {
-    "filters": "Filters",
+    "filters": "<typography>{{Filters}}</typography>",
     "year": "Year",
-    "type": "Type",
+    "type": "<typography>{{Type}}</typography>",
     "movie": "Movie",
     "series": "Series"
+  },
+  "brand": {
+    "name": "<typography>{{value}}</typography>"
+  },
+  "error": {
+    "noMovie": "No movies to show",
+    "noFavorite": "No favorite movies to show",
+    "noHistory": "No history to show",
+    "invalidYear": "The range of year should be between {{minYear}} and {{maxYear}}"
   }
 }
