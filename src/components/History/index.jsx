@@ -14,7 +14,7 @@ const History = () => {
 
   // to take the movies present in the store
   const { moviesHistory, recentMovie, setRemoveOneMovie, setRemoveAllMovies } =
-    useViewMoviesHistory.pick(
+    useViewMoviesHistory(
       store => ({
         moviesHistory: store.moviesHistory,
         recentMovie: store.recentMovie,
