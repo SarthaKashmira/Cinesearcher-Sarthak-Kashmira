@@ -29,11 +29,10 @@ const List = () => {
   // using useRef here for referring to the input field
   const inputRef = useRef(null);
   // custom hook for fetching the data from the api
-  const typeArray = type.split(",");
   const { data: movies = {}, isLoading } = useFetchMovies({
     s,
     y,
-    type: typeArray,
+    type: type?.split(","),
     page: page || DEFAULT_PAGE_NUMBER,
   });
 
