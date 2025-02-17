@@ -32,7 +32,7 @@ const List = () => {
   const { data: movies = {}, isLoading } = useFetchMovies({
     s,
     y,
-    type: type.split(","),
+    type: type?.split(","),
     page: page || DEFAULT_PAGE_NUMBER,
   });
 
@@ -53,7 +53,7 @@ const List = () => {
 
   useEffect(() => {
     const handleKeyPress = event => {
-      if (event.key === "/") {
+      if (event.key) {
         inputRef.current?.focus();
       }
     };
