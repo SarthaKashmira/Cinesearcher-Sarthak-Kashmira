@@ -1,15 +1,20 @@
 import { useEffect, useRef } from "react";
 
+import { Delete } from "neetoicons";
+import { Button, Label } from "neetoui";
+import { isEmpty } from "ramda";
+import { useTranslation } from "react-i18next";
 import useViewMoviesHistory from "stores/useViewMoviesHistory";
 import { shallow } from "zustand/shallow";
 
 const History = () => {
+  const { t } = useTranslation();
   // to refer the container
   const containerRef = useRef(null);
 
   // to take the movies present in the store
   const { moviesHistory, recentMovie, setRemoveOneMovie, setRemoveAllMovies } =
-    useViewMoviesHistory(
+    useViewMoviesHistory.pick(
       store => ({
         moviesHistory: store.moviesHistory,
         recentMovie: store.recentMovie,
@@ -23,7 +28,7 @@ const History = () => {
   const smoothScrolling = () => {
     const container = containerRef.current;
     const { imdbID } = recentMovie;
-    const target = container.querySelector(`[data-key="${imdbID}"]`);
+    const target = container?.querySelector(`[data-key="${imdbID}"]`);
     if (target) {
       target.scrollIntoView({
         behavior: "smooth", // Smooth scrolling
@@ -37,16 +42,24 @@ const History = () => {
     smoothScrolling();
   }, [recentMovie]);
 
+  if (isEmpty(moviesHistory)) {
+    return (
+      <div className="mx-auto  mt-4 h-screen w-full max-w-md rounded-lg border bg-white p-4 shadow-lg">
+        <Label>{t("error.noHistory")}</Label>
+      </div>
+    );
+  }
+
   return (
     <div className="mx-auto  mt-1 w-full max-w-md rounded-lg border bg-white p-4 shadow-lg">
       {/* Title */}
       <div className="mb-4 flex items-center justify-between">
-        <h1 className="text-xl font-bold">View History</h1>
+        <h1 className="text-xl font-bold">{t("history.viewHistory")}</h1>
         <button
           className="rounded bg-transparent p-2 text-red-500"
           onClick={() => setRemoveAllMovies()}
         >
-          Clear All
+          {t("history.clearAll")}
         </button>
       </div>
       {/* Scrollable Container */}
@@ -65,12 +78,16 @@ const History = () => {
               }`}
             >
               <span>{Title}</span>
-              <button
-                className="rounded bg-transparent p-2 text-red-500"
+              <Button
+                className="outline-none items-end bg-transparent"
+                iconSize={24}
+                size="large"
+                style="text"
+                icon={() => (
+                  <Delete className="neeto-ui-text-gray-800" size={15} />
+                )}
                 onClick={() => setRemoveOneMovie({ Title, imdbID })}
-              >
-                Delete
-              </button>
+              />
             </div>
           );
         })}

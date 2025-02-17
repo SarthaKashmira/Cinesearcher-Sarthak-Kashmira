@@ -1,3 +1,4 @@
+import { filterBy, matches, notEquals } from "neetocist";
 import { includes } from "ramda";
 import { create } from "zustand";
 
@@ -15,13 +16,15 @@ const useViewMoviesHistory = create(set => ({
   setRemoveOneMovie: movie =>
     set(({ moviesHistory, recentMovie }) => {
       // Remove the movie from moviesHistory
-      const updatedMoviesHistory = moviesHistory.filter(
-        movieItem => movie.imdbID !== movieItem.imdbID
+      const updatedMoviesHistory = filterBy(
+        { imdbID: notEquals(movie.imdbID) },
+        moviesHistory
       );
 
       // Update recentMovie if it was the removed movie
       const updatedRecentMovie =
-        recentMovie.imdbID === movie.imdbID && updatedMoviesHistory.length > 0
+        matches({ imdbID: movie.imdbID }, recentMovie) &&
+        updatedMoviesHistory.length > 0
           ? updatedMoviesHistory[0]
           : recentMovie;
 

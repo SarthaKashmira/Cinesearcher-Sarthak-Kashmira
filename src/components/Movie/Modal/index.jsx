@@ -1,20 +1,23 @@
 import { PageLoader } from "components/commons";
 import { useShowMovie } from "hooks/reactQuery/useShowMovie";
-import { Modal, Tooltip, Typography } from "neetoui";
+import { Rating, RatingFilled } from "neetoicons";
+import { Button, Modal, Typography } from "neetoui";
 import { Trans, useTranslation } from "react-i18next";
-import useFavouriteMovies from "stores/useFavouriteMovies";
+import useFavoriteMovies from "stores/useFavoriteMovies";
 import { fetchMoviePoster } from "utils/movie";
 
-import { checkFavouriteMovie, fetchGenres } from "./utils";
+import { checkFavoriteMovie, fetchGenres } from "./utils";
 
 const MovieModal = ({ isOpen, movie, setIsOpen }) => {
   const { t } = useTranslation();
 
-  const { data: movieInformation = {}, isLoading } = useShowMovie(movie.imdbID);
-  const { favouriteMovies = [], setFavouriteMovie } = useFavouriteMovies(
+  const { imdbID } = movie;
+
+  const { data: movieInformation = {}, isLoading } = useShowMovie(imdbID);
+  const { favoriteMovies = [], setFavoriteMovie } = useFavoriteMovies(
     store => ({
-      favouriteMovies: store.favouriteMovies,
-      setFavouriteMovie: store.setFavouriteMovie,
+      favoriteMovies: store.favoriteMovies,
+      setFavoriteMovie: store.setFavoriteMovie,
     })
   );
 
@@ -29,8 +32,7 @@ const MovieModal = ({ isOpen, movie, setIsOpen }) => {
     Year,
     Runtime,
     Language,
-    Rated,
-    imdbID,
+    imdbRating,
   } = movieInformation;
 
   const movieDetails = [
@@ -41,47 +43,68 @@ const MovieModal = ({ isOpen, movie, setIsOpen }) => {
     { key: "Year", label: "Year", value: Year },
     { key: "Runtime", label: "Runtime", value: Runtime },
     { key: "Language", label: "Language", value: Language },
-    { key: "Rated", label: "Rated", value: Rated },
+    { key: "imdbRating", label: "imdbRating", value: imdbRating },
   ];
 
   const handleAddToFavorites = () => {
-    setFavouriteMovie({ imdbID, Title, Rated });
+    setFavoriteMovie({ imdbID, Title, imdbRating });
   };
-  if (isLoading) return <PageLoader />;
+
+  if (isLoading) {
+    return (
+      <Modal isOpen={isOpen} size="large" onClose={() => setIsOpen(false)}>
+        <div className="flex items-center justify-center p-6">
+          <PageLoader />
+        </div>
+      </Modal>
+    );
+  }
 
   return (
     <Modal onClose={() => setIsOpen(false)} {...{ isOpen }} size="large">
       <div className="p-6">
-        {/* Title here */}
         <div className="flex">
-          <h2 className="mb-2 text-2xl font-bold">{Title}</h2>
-          <Tooltip
-            followCursor="horizontal"
-            position="top"
-            content={
-              checkFavouriteMovie({ imdbID, Title, Rated }, favouriteMovies)
-                ? "Remove from favorites"
-                : "Add to favorites"
+          <Typography className="mb-2 text-2xl font-bold" style="h2">
+            {Title}
+          </Typography>
+          <Button
+            className="ml-4 rounded px-2 py-1 text-sm"
+            style="link"
+            icon={() =>
+              checkFavoriteMovie(
+                { imdbID, Title, imdbRating },
+                favoriteMovies
+              ) ? (
+                <RatingFilled />
+              ) : (
+                <Rating />
+              )
             }
-          >
-            <button
-              className="ml-4 rounded px-2 py-1 text-sm"
-              onClick={handleAddToFavorites}
-            >
-              {checkFavouriteMovie({ imdbID, Title, Rated }, favouriteMovies)
-                ? "⭐"
-                : "⚝"}
-            </button>
-          </Tooltip>
+            tooltipProps={{
+              followCursor: "horizontal",
+              position: "top",
+              content: checkFavoriteMovie(
+                { imdbID, Title, imdbRating },
+                favoriteMovies
+              )
+                ? t("modal.removeFavorite")
+                : t("modal.addFavorite"),
+            }}
+            onClick={handleAddToFavorites}
+          />
         </div>
         {/* Tags section here */}
         <div className="mb-4 flex flex-wrap gap-2">
           {fetchGenres(Genre).map((genre, index) => (
             <Typography key={index}>
               <Trans
-                components={{ typography: <strong /> }}
                 i18nKey="modal.genre"
                 values={{ genre }}
+                components={{
+                  typography: (
+                    <strong className="rounded-full bg-gray-200 px-3 py-1 text-sm text-gray-600" />
+                  ),
+                }}
               />
             </Typography>
           ))}
