@@ -1,5 +1,5 @@
 import classNames from "classnames";
-import { Button } from "neetoui";
+import { Button, Typography } from "neetoui";
 import { Trans } from "react-i18next";
 import { Link } from "react-router-dom";
 import { routes } from "routes";
@@ -16,10 +16,12 @@ const Header = ({ activeTab }) => {
       <div className="text-xl font-bold">
         {brand.map(({ color, value }) => (
           <Trans
-            components={{ typography: <span className={color} /> }}
             i18nKey="brand.name"
             key={value}
             values={{ value }}
+            components={{
+              typography: <Typography className={color} component="span" />,
+            }}
           />
         ))}
       </div>

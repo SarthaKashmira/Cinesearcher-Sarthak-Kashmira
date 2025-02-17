@@ -3,8 +3,8 @@ import { useState } from "react";
 import MovieModal from "components/Movie/Modal";
 import { Button } from "neetoui";
 import { Trans } from "react-i18next";
+import { fetchMoviePoster } from "src/components/Movie/utils";
 import useViewMoviesHistoryStore from "stores/useViewMoviesHistoryStore";
-import { fetchMoviePoster } from "utils/movie";
 
 const Card = ({ movie }) => {
   const [isOpen, setIsOpen] = useState(false);

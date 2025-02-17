@@ -17,7 +17,7 @@ import { buildUrl } from "utils/url";
 
 import { DEFAULT_PAGE_SIZE, DEFAULT_PAGE_NUMBER } from "./constants";
 
-import FilterDropdown from "../FilterDropdown";
+import FilterDropdown from "../FilterDropDown";
 
 const List = () => {
   // useHistory Api for changing the urls as per the query params
@@ -32,12 +32,12 @@ const List = () => {
 
   const queryParams = useQueryParams();
 
-  const { page, searchTerm: s, year: y, type } = queryParams;
+  const { page, searchTerm, year, type } = queryParams;
 
   // custom hook for fetching the data from the api
   const { data: movies = {}, isLoading } = useFetchMovies({
-    s,
-    y,
+    searchTerm,
+    year,
     type: type?.split(","),
     page: page || DEFAULT_PAGE_NUMBER,
   });

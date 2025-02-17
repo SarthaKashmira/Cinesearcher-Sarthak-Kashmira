@@ -3,8 +3,8 @@ import { useShowMovie } from "hooks/reactQuery/useShowMovie";
 import { Rating, RatingFilled } from "neetoicons";
 import { Button, Modal, Typography } from "neetoui";
 import { Trans, useTranslation } from "react-i18next";
+import { fetchMoviePoster } from "src/components/Movie/utils";
 import useFavoriteMoviesStore from "stores/useFavoriteMoviesStore";
-import { fetchMoviePoster } from "utils/movie";
 
 import { checkFavoriteMovie, fetchGenres } from "./utils";
 
@@ -17,6 +17,7 @@ const MovieModal = ({ isOpen, movie, setIsOpen }) => {
   const { favoriteMovies = [], setFavoriteMovie } =
     useFavoriteMoviesStore.pick();
 
+  console.log(movieInformation);
   const {
     Poster,
     Title,
@@ -122,7 +123,7 @@ const MovieModal = ({ isOpen, movie, setIsOpen }) => {
                 <Trans
                   components={{ typography: <strong /> }}
                   i18nKey="modal.detail"
-                  values={{ label: t(label), value }}
+                  values={{ label, value }}
                 />
               </Typography>
             ))}

@@ -1,12 +1,15 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 
 import { Delete } from "neetoicons";
-import { Button, Label } from "neetoui";
+import { Alert, Button, Label, Typography } from "neetoui";
 import { isEmpty } from "ramda";
 import { useTranslation } from "react-i18next";
 import useViewMoviesHistoryStore from "stores/useViewMoviesHistoryStore";
 
 const History = () => {
+  const [clearAllAlert, setClearAllAlert] = useState(false);
+  const [deleteHistoryAlert, setDeleteHistoryAlert] = useState(false);
+
   const { t } = useTranslation();
   // to refer the container
   const containerRef = useRef(null);
@@ -45,13 +48,16 @@ const History = () => {
     <div className="mx-auto w-full max-w-md rounded-lg border bg-white p-4 shadow-lg">
       {/* Title */}
       <div className="mb-4 flex items-center justify-between">
-        <h1 className="text-xl font-bold">{t("history.viewHistory")}</h1>
-        <button
+        <Typography className="text-xl font-bold" style="h1">
+          {t("history.viewHistory")}
+        </Typography>
+        <Button
           className="rounded bg-transparent p-2 text-red-500"
-          onClick={() => setRemoveAllMovies()}
+          style="link"
+          onClick={() => setClearAllAlert(true)}
         >
-          {t("history.clearAll")}
-        </button>
+          {t("history.clearAll.name")}
+        </Button>
       </div>
       {/* Scrollable Container */}
       <div className="h-screen space-y-3 overflow-y-auto" ref={containerRef}>
@@ -68,7 +74,7 @@ const History = () => {
                   : "bg-viewHistory text-black"
               }`}
             >
-              <span>{Title}</span>
+              <Typography>{Title}</Typography>
               <Button
                 className="outline-none items-end bg-transparent"
                 iconSize={24}
@@ -77,12 +83,33 @@ const History = () => {
                 icon={() => (
                   <Delete className="neeto-ui-text-gray-800" size={15} />
                 )}
-                onClick={() => setRemoveOneMovie({ Title, imdbID })}
+                onClick={() => setDeleteHistoryAlert(true)}
+              />
+              <Alert
+                cancelButtonLabel={t("history.deleteHistory.cancel")}
+                isOpen={deleteHistoryAlert}
+                message={t("history.deleteHistory.message", { title: Title })}
+                submitButtonLabel={t("history.deleteHistory.confirm")}
+                title={t("history.deleteHistory.title")}
+                onClose={() => setDeleteHistoryAlert(false)}
+                onSubmit={() => {
+                  setRemoveOneMovie({ Title, imdbID });
+                  setDeleteHistoryAlert(false);
+                }}
               />
             </div>
           );
         })}
       </div>
+      <Alert
+        cancelButtonLabel={t("history.clearAll.cancel")}
+        isOpen={clearAllAlert}
+        message={t("history.clearAll.message")}
+        submitButtonLabel={t("history.clearAll.confirm")}
+        title={t("history.clearAll.title")}
+        onClose={() => setClearAllAlert(false)}
+        onSubmit={() => setRemoveAllMovies()}
+      />
     </div>
   );
 };
