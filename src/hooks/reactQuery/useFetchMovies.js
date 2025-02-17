@@ -10,6 +10,7 @@ export const useFetchMovies = params =>
     queryFn: () => movieApi.fetch(params),
     keepPreviousData: true, // to keep the previous data
     onSuccess: data => {
+      console.log(data);
       if (data?.Response === "False") {
         Toastr.error(data.Error, { autoClose: 2000 });
       }

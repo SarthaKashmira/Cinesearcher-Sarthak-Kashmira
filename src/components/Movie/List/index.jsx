@@ -16,11 +16,13 @@ import { buildUrl } from "utils/url";
 
 import { DEFAULT_PAGE_SIZE, DEFAULT_PAGE_NUMBER } from "./constants";
 
+import FilterDropdown from "../Filter";
+
 const List = () => {
   // useHistory Api for changing the urls as per the query params
   const history = useHistory();
   const queryParams = useQueryParams();
-  const { page, searchTerm: s } = queryParams;
+  const { page, searchTerm: s, year: y, type } = queryParams;
 
   const [searchKey, setSearchKey] = useState("");
 
@@ -29,12 +31,15 @@ const List = () => {
   // custom hook for fetching the data from the api
   const { data: movies = {}, isLoading } = useFetchMovies({
     s,
+    y,
+    type: type.split(","),
     page: page || DEFAULT_PAGE_NUMBER,
   });
 
   // to update the query params whenever the user in writing something for the search key.
   const updateQueryParams = useFuncDebounce(value => {
     const params = {
+      ...queryParams,
       page: DEFAULT_PAGE_NUMBER,
       searchTerm: value || null,
     };
@@ -48,7 +53,7 @@ const List = () => {
 
   useEffect(() => {
     const handleKeyPress = event => {
-      if (event.key) {
+      if (event.key === "/") {
         inputRef.current?.focus();
       }
     };
@@ -67,6 +72,8 @@ const List = () => {
         <div className="m-2">
           <div className="mx-auto max-w-6xl">
             <Header />
+          </div>
+          <div className="flex p-0">
             <Input
               placeholder="Search products"
               prefix={<Search />}
@@ -78,6 +85,7 @@ const List = () => {
                 setSearchKey(value);
               }}
             />
+            <FilterDropdown />
           </div>
           <div className="mx-auto flex max-w-6xl items-center justify-center">
             {!movies.Search ? (
