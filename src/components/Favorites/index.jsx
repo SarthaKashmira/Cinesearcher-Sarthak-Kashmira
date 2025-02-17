@@ -1,14 +1,12 @@
 import { Header, PageNotFound } from "components/commons";
 import { isEmpty } from "ramda";
 import { useTranslation } from "react-i18next";
-import useFavoriteMovies from "stores/useFavoriteMovies";
+import useFavoriteMoviesStore from "stores/useFavoriteMoviesStore";
 
 const Favorites = () => {
   const { t } = useTranslation();
 
-  const { favoriteMovies } = useFavoriteMovies(store => ({
-    favoriteMovies: store.favoriteMovies,
-  }));
+  const favoriteMovies = useFavoriteMoviesStore.pickFrom();
 
   return (
     <>
