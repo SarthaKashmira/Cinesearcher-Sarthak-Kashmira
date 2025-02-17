@@ -1,20 +1,24 @@
 import { useEffect, useState } from "react";
 
-import dayjs from "dayjs";
 import useQueryParams from "hooks/useQueryParams";
 import { filterNonNull } from "neetocist";
 import { Close, Filter } from "neetoicons";
-import { Button, Dropdown, Input, Checkbox, Label } from "neetoui";
+import { Button, Dropdown, Input, Checkbox, Label, Typography } from "neetoui";
 import { Trans, useTranslation } from "react-i18next";
 import { useHistory } from "react-router-dom";
 import { routes } from "routes";
 import { buildUrl } from "utils/url";
+
+import { MAX_YEAR, MIN_YEAR } from "./constants";
+import { validateYear } from "./utils";
 
 const DEFAULT_PAGE_INDEX = 1;
 const DEFAULT_TYPES = ["movie", "series"];
 
 const FilterDropdown = () => {
   const [closeDropdown, setCloseDropdown] = useState(false);
+  const [yearError, setYearError] = useState("");
+  const [year, setYear] = useState("");
 
   const { t } = useTranslation();
 
@@ -30,8 +34,6 @@ const FilterDropdown = () => {
   const selectedTypes = queryParams.type
     ? queryParams.type.split(",")
     : DEFAULT_TYPES;
-
-  const { year = "" } = queryParams;
 
   const handleYearChange = value => {
     const params = {
@@ -53,6 +55,18 @@ const FilterDropdown = () => {
         page: DEFAULT_PAGE_INDEX,
       })
     );
+  };
+
+  const handleYearValidation = ({ target: { value } }) => {
+    if (validateYear(value)) {
+      setYearError("");
+    } else {
+      setYearError(
+        t("error.invalidYear", { minYear: MIN_YEAR, maxYear: MAX_YEAR })
+      );
+    }
+    handleYearChange(value);
+    setYear(value);
   };
 
   useEffect(() => {
@@ -103,15 +117,16 @@ const FilterDropdown = () => {
             <Input
               className="transition-all focus:border-indigo-500"
               label={t("labels.year")}
-              max={dayjs().year()}
-              min="1900"
+              max={MAX_YEAR}
+              min={MIN_YEAR}
               placeholder="YYYY"
               type="number"
               value={year}
-              onChange={({ target: { value } }) => {
-                handleYearChange(value);
-              }}
+              onChange={handleYearValidation}
             />
+            {yearError && (
+              <Typography className="text-red-500">{yearError}</Typography>
+            )}
           </div>
           <div className="space-y-3">
             <Trans
