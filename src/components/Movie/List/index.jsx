@@ -29,10 +29,11 @@ const List = () => {
   // using useRef here for referring to the input field
   const inputRef = useRef(null);
   // custom hook for fetching the data from the api
+  const typeArray = type.split(",");
   const { data: movies = {}, isLoading } = useFetchMovies({
     s,
     y,
-    type: type.split(","),
+    type: typeArray,
     page: page || DEFAULT_PAGE_NUMBER,
   });
 
@@ -53,7 +54,7 @@ const List = () => {
 
   useEffect(() => {
     const handleKeyPress = event => {
-      if (event.key === "/") {
+      if (event.key) {
         inputRef.current?.focus();
       }
     };
