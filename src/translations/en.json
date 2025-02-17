@@ -6,5 +6,12 @@
   "movieCard": {
     "Title": "{{Title}}",
     "year": "{{Movie}} • {{Year}}"
+  },
+  "labels": {
+    "filters": "Filters",
+    "year": "Year",
+    "type": "Type",
+    "movie": "Movie",
+    "series": "Series"
   }
 }
