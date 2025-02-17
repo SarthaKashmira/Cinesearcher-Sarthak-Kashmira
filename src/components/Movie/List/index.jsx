@@ -17,7 +17,7 @@ import { buildUrl } from "utils/url";
 
 import { DEFAULT_PAGE_SIZE, DEFAULT_PAGE_NUMBER } from "./constants";
 
-import FilterDropdown from "../Filter";
+import FilterDropdown from "../FilterDropdown";
 
 const List = () => {
   // useHistory Api for changing the urls as per the query params
