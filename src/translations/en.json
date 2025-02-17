@@ -11,7 +11,19 @@
   },
   "history": {
     "viewHistory": "View history",
-    "clearAll": "Clear all"
+    "clearAll": {
+      "name": "Clear all",
+      "cancel": "Cancel",
+      "message": "Are you sure you want to clear all your history?",
+      "confirm": "Yes, proceed",
+      "title": "Clear history"
+    },
+    "deleteHistory": {
+      "message": "Are you sure you want to remove {{title}}",
+      "title": "Delete history",
+      "cancel": "Cancel",
+      "confirm": "Yes, proceed"
+    }
   },
   "labels": {
     "filters": "<typography>{{Filters}}</typography>",
@@ -19,6 +31,9 @@
     "type": "<typography>{{Type}}</typography>",
     "movie": "Movie",
     "series": "Series"
+  },
+  "favorite": {
+    "rating": "Rating: "
   },
   "brand": {
     "name": "<typography>{{value}}</typography>"

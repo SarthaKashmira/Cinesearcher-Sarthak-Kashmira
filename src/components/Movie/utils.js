@@ -1,4 +1,4 @@
-import { DEFAULT_MOVIE_POSTER } from "src/constants/movie";
+import { DEFAULT_MOVIE_POSTER } from "./constants";
 
 export const fetchMoviePoster = poster => {
   if (poster === "N/A") {

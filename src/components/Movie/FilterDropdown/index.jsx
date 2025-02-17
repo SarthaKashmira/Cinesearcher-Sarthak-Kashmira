@@ -96,7 +96,10 @@ const FilterDropdown = () => {
             values={{ Filters: "Filters" }}
             components={{
               typography: (
-                <span className="text-lg font-semibold text-gray-700" />
+                <Typography
+                  className="text-lg font-semibold text-gray-700"
+                  component="span"
+                />
               ),
             }}
           />

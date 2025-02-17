@@ -1,4 +1,5 @@
 import { Header, PageNotFound } from "components/commons";
+import { Typography } from "neetoui";
 import { isEmpty } from "ramda";
 import { useTranslation } from "react-i18next";
 import useFavoriteMoviesStore from "stores/useFavoriteMoviesStore";
@@ -15,18 +16,18 @@ const Favorites = () => {
         {isEmpty(favoriteMovies) && (
           <PageNotFound returnHome description={t("error.noFavorite")} />
         )}
-        {favoriteMovies.map((movie, index) => (
+        {favoriteMovies.map(({ imdbID, Title, imdbRating }) => (
           <div
             className="mb-4 flex items-center justify-between rounded-lg bg-gray-100 p-4 shadow-sm"
-            key={index}
+            key={imdbID}
           >
-            <span className="text-left font-bold">{movie.Title}</span>
-            <span className="text-sm text-gray-600">
-              Rating:{" "}
-              <span className="text-base font-semibold text-black">
-                {movie.imdbRating}
-              </span>
-            </span>
+            <Typography className="text-left font-bold">{Title}</Typography>
+            <Typography className="text-sm text-gray-600">
+              {t("favorite.rating")}
+              <Typography className="text-base font-semibold text-black">
+                {imdbRating}
+              </Typography>
+            </Typography>
           </div>
         ))}
       </div>
