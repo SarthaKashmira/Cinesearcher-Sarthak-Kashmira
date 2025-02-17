@@ -44,14 +44,14 @@ const History = () => {
 
   if (isEmpty(moviesHistory)) {
     return (
-      <div className="mx-auto  mt-4 h-screen w-full max-w-md rounded-lg border bg-white p-4 shadow-lg">
+      <div className="mx-auto h-screen w-full max-w-md rounded-lg border bg-white p-4 shadow-lg">
         <Label>{t("error.noHistory")}</Label>
       </div>
     );
   }
 
   return (
-    <div className="mx-auto  mt-1 w-full max-w-md rounded-lg border bg-white p-4 shadow-lg">
+    <div className="mx-auto w-full max-w-md rounded-lg border bg-white p-4 shadow-lg">
       {/* Title */}
       <div className="mb-4 flex items-center justify-between">
         <h1 className="text-xl font-bold">{t("history.viewHistory")}</h1>

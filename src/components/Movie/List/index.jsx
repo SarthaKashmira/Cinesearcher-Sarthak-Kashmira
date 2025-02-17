@@ -73,57 +73,61 @@ const List = () => {
   if (isLoading) return <PageLoader />;
 
   return (
-    <div className="flex h-screen">
-      <div className="flex flex-1 flex-col">
-        <div className="m-2">
-          <div className="mx-auto max-w-6xl">
-            <Header activeTab="Home" />
-          </div>
-          <div className="flex p-0">
-            <Input
-              placeholder="Search products"
-              prefix={<Search />}
-              ref={inputRef}
-              type="search"
-              value={searchKey}
-              onChange={({ target: { value } }) => {
-                updateQueryParams(value);
-                setSearchKey(value);
-              }}
-            />
-            <FilterDropdown />
-          </div>
-          <div className="mx-auto flex max-w-6xl items-center justify-center">
-            {!movies.Search ? (
-              <div className="flex h-full items-center justify-center">
-                <PageNotFound
-                  description={t("error.noMovie")}
-                  returnHome={false}
-                />
-              </div>
-            ) : (
-              <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
-                {movies?.Search?.map(movie => {
-                  const { imdbID } = movie;
-
-                  return <MovieCard key={imdbID} movie={movie} />;
-                })}
-                {movies?.Actors && <MovieCard movie={movies} />}
-              </div>
-            )}
-          </div>
-        </div>
-        <div className="mb-5 self-end">
-          <Pagination
-            count={movies.totalResults}
-            navigate={handlePageNavigation}
-            pageNo={page || DEFAULT_PAGE_NUMBER}
-            pageSize={DEFAULT_PAGE_SIZE}
-          />
-        </div>
+    <div className="flex h-screen flex-col">
+      <div className="w-full">
+        <Header activeTab="Home" />
       </div>
-      <div className="w-96">
-        <ViewHistory />
+      <div className="flex flex-1">
+        <div className="flex flex-1 flex-col">
+          <div className="m-2">
+            <div className="mx-auto max-w-6xl">
+              <div className="flex p-0">
+                <Input
+                  placeholder="Search products"
+                  prefix={<Search />}
+                  ref={inputRef}
+                  type="search"
+                  value={searchKey}
+                  onChange={({ target: { value } }) => {
+                    updateQueryParams(value);
+                    setSearchKey(value);
+                  }}
+                />
+                <FilterDropdown />
+              </div>
+              <div className="mx-auto flex max-w-6xl items-center justify-center">
+                {!movies.Search ? (
+                  <div className="flex h-full items-center justify-center">
+                    <PageNotFound
+                      description={t("error.noMovie")}
+                      returnHome={false}
+                    />
+                  </div>
+                ) : (
+                  <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+                    {movies?.Search?.map(movie => {
+                      const { imdbID } = movie;
+
+                      return <MovieCard key={imdbID} movie={movie} />;
+                    })}
+                    {movies?.Actors && <MovieCard movie={movies} />}
+                  </div>
+                )}
+              </div>
+            </div>
+          </div>
+          <div className="mb-5 self-end">
+            <Pagination
+              count={movies.totalResults}
+              navigate={handlePageNavigation}
+              pageNo={page || DEFAULT_PAGE_NUMBER}
+              pageSize={DEFAULT_PAGE_SIZE}
+            />
+          </div>
+        </div>
+        <div className="w-96">
+          <ViewHistory />
+        </div>
       </div>
     </div>
   );
