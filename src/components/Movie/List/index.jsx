@@ -3,6 +3,7 @@ import { useState, useEffect, useRef } from "react";
 import { Header, PageLoader, PageNotFound } from "components/commons";
 import ViewHistory from "components/History";
 import MovieCard from "components/Movie/Card";
+import FilterDropdown from "components/Movie/FilterDropdown";
 import { useFetchMovies } from "hooks/reactQuery/useFetchMovies";
 import useFuncDebounce from "hooks/useFuncDebounce";
 import useQueryParams from "hooks/useQueryParams";
@@ -16,8 +17,6 @@ import { routes } from "routes";
 import { buildUrl } from "utils/url";
 
 import { DEFAULT_PAGE_SIZE, DEFAULT_PAGE_NUMBER } from "./constants";
-
-import FilterDropdown from "../FilterDropDown";
 
 const List = () => {
   // useHistory Api for changing the urls as per the query params
