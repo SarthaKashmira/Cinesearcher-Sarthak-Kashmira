@@ -30,7 +30,8 @@
     "year": "Year",
     "type": "<typography>{{Type}}</typography>",
     "movie": "Movie",
-    "series": "Series"
+    "series": "Series",
+    "searchMovies": "Enter movie name"
   },
   "favorite": {
     "rating": "Rating: <bold>{{rating}}</bold>"

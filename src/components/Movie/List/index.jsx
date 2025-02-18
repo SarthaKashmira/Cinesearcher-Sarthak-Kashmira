@@ -85,7 +85,7 @@ const List = () => {
             <div className="mx-auto max-w-6xl">
               <div className="flex p-0">
                 <Input
-                  placeholder="Search products"
+                  placeholder={t("labels.searchMovies")}
                   prefix={<Search />}
                   ref={inputRef}
                   type="search"
