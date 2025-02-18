@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 
-import { Header, PageLoader, PageNotFound } from "components/commons";
+import { Header, NoDataShow, PageLoader } from "components/commons";
 import ViewHistory from "components/History";
 import Card from "components/Movie/Card";
 import FilterDropdown from "components/Movie/FilterDropdown";
@@ -49,7 +49,6 @@ const List = () => {
       page: isEmpty(value) ? null : DEFAULT_PAGE_NUMBER,
       searchTerm: value || null,
     };
-
     setCurrentPage(DEFAULT_PAGE_NUMBER);
     history.replace(buildUrl(routes.home, filterNonNull(params)));
   });
@@ -81,7 +80,7 @@ const List = () => {
         <Header activeTab="Home" />
       </div>
       <div className="flex flex-1">
-        <div className="flex flex-1 flex-col">
+        <div className="m-2 flex flex-1 flex-col">
           <div className="m-2">
             <div className="mx-auto max-w-6xl">
               <div className="flex p-0">
@@ -92,20 +91,15 @@ const List = () => {
                   type="search"
                   value={searchKey}
                   onChange={({ target: { value } }) => {
-                    updateQueryParams(value);
                     setSearchKey(value);
+                    updateQueryParams(value);
                   }}
                 />
                 <FilterDropdown />
               </div>
               <div className="mx-auto flex max-w-6xl items-center justify-center">
-                {!movies.Search ? (
-                  <div className="flex h-full items-center justify-center">
-                    <PageNotFound
-                      description={t("error.noMovie")}
-                      returnHome={false}
-                    />
-                  </div>
+                {!movies.Search || isEmpty(searchKey) ? (
+                  <NoDataShow description={t("error.noMovie")} />
                 ) : (
                   <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
                     {movies?.Search?.map(movie => {
@@ -120,7 +114,7 @@ const List = () => {
           </div>
           <div className="mb-5 self-end">
             <Pagination
-              count={movies.totalResults}
+              count={isEmpty(searchKey) ? 0 : movies.totalResults}
               navigate={handlePageNavigation}
               pageNo={currentPage || DEFAULT_PAGE_NUMBER}
               pageSize={DEFAULT_PAGE_SIZE}

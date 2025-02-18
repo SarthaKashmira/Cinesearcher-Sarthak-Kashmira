@@ -8,9 +8,9 @@ import "./App.css";
 
 const App = () => (
   <Switch>
-    <Route component={List} path={routes.home} />
-    <Route component={Favorites} path={routes.favorite} />
-    <Redirect from="/" to={routes.home} />
+    <Route exact component={List} path={routes.home} />
+    <Route exact component={Favorites} path={routes.favorite} />
+    <Redirect exact from={routes.default} to={routes.home} />
     <Route component={PageNotFound} path="*" />
   </Switch>
 );

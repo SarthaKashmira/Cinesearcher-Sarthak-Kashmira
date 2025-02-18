@@ -6,46 +6,31 @@ import { Trans, useTranslation } from "react-i18next";
 import { fetchMoviePoster } from "src/components/Movie/utils";
 import useFavoriteMoviesStore from "stores/useFavoriteMoviesStore";
 
-import { checkFavoriteMovie, fetchGenres } from "./utils";
+import { checkFavoriteMovie, fetchGenres, getMovieModalDetails } from "./utils";
 
 const MovieModal = ({ isOpen, movie, setIsOpen }) => {
   const { t } = useTranslation();
 
+  // needed to destructure here so as to make an api call
   const { imdbID } = movie;
 
   const { data: movieInformation = {}, isLoading } = useShowMovie(imdbID);
+
   const { favoriteMovies = [], setFavoriteMovie } =
     useFavoriteMoviesStore.pick();
 
-  console.log(movieInformation);
+  const handleAddToFavorites = () => {
+    setFavoriteMovie({ imdbID, title, imdbRating });
+  };
+
+  const movieDetails = getMovieModalDetails(movieInformation);
+
   const {
-    Poster,
-    Title,
-    Genre,
-    Plot,
-    Director,
-    Actors,
-    BoxOffice,
-    Year,
-    Runtime,
-    Language,
+    Poster: poster,
+    Title: title,
+    Genre: genres,
     imdbRating,
   } = movieInformation;
-
-  const movieDetails = [
-    { key: "Description", label: "Description", value: Plot },
-    { key: "Director", label: "Director", value: Director },
-    { key: "Actors", label: "Actors", value: Actors },
-    { key: "BoxOffice", label: "BoxOffice", value: BoxOffice },
-    { key: "Year", label: "Year", value: Year },
-    { key: "Runtime", label: "Runtime", value: Runtime },
-    { key: "Language", label: "Language", value: Language },
-    { key: "imdbRating", label: "imdbRating", value: imdbRating },
-  ];
-
-  const handleAddToFavorites = () => {
-    setFavoriteMovie({ imdbID, Title, imdbRating });
-  };
 
   if (isLoading) {
     return (
@@ -62,14 +47,14 @@ const MovieModal = ({ isOpen, movie, setIsOpen }) => {
       <div className="p-6">
         <div className="flex">
           <Typography className="mb-2 text-2xl font-bold" style="h2">
-            {Title}
+            {title}
           </Typography>
           <Button
             className="ml-4 rounded px-2 py-1 text-sm"
             style="link"
             icon={() =>
               checkFavoriteMovie(
-                { imdbID, Title, imdbRating },
+                { imdbID, title, imdbRating },
                 favoriteMovies
               ) ? (
                 <RatingFilled />
@@ -81,7 +66,7 @@ const MovieModal = ({ isOpen, movie, setIsOpen }) => {
               followCursor: "horizontal",
               position: "top",
               content: checkFavoriteMovie(
-                { imdbID, Title, imdbRating },
+                { imdbID, title, imdbRating },
                 favoriteMovies
               )
                 ? t("modal.removeFavorite")
@@ -92,7 +77,7 @@ const MovieModal = ({ isOpen, movie, setIsOpen }) => {
         </div>
         {/* Tags section here */}
         <div className="mb-4 flex flex-wrap gap-2">
-          {fetchGenres(Genre).map((genre, index) => (
+          {fetchGenres(genres).map((genre, index) => (
             <Typography key={index}>
               <Trans
                 i18nKey="modal.genre"
@@ -111,9 +96,9 @@ const MovieModal = ({ isOpen, movie, setIsOpen }) => {
         {/* Image part is here */}
         <div className="flex-shrink-0">
           <img
-            alt={Title}
+            alt={title}
             className="h-auto w-full rounded-lg object-cover md:w-48"
-            src={fetchMoviePoster(Poster)}
+            src={fetchMoviePoster(poster)}
           />
         </div>
         <div className="ml-0 mt-4 flex flex-grow flex-col md:ml-6 md:mt-0">

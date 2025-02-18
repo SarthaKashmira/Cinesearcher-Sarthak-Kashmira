@@ -1,12 +1,16 @@
 import { useEffect, useRef, useState } from "react";
 
+import classNames from "classnames";
 import { Delete } from "neetoicons";
 import { Alert, Button, Label, Typography } from "neetoui";
 import { isEmpty } from "ramda";
 import { useTranslation } from "react-i18next";
 import useViewMoviesHistoryStore from "stores/useViewMoviesHistoryStore";
 
+import { smoothScrolling } from "./utils";
+
 const History = () => {
+  // here useStates are used to open and close the alert modals before deleting any history
   const [clearAllAlert, setClearAllAlert] = useState(false);
   const [deleteHistoryAlert, setDeleteHistoryAlert] = useState(false);
 
@@ -18,22 +22,9 @@ const History = () => {
   const { moviesHistory, recentMovie, setRemoveOneMovie, setRemoveAllMovies } =
     useViewMoviesHistoryStore.pick();
 
-  // This is used to perform smooth scrolling of the container
-  const smoothScrolling = () => {
-    const container = containerRef.current;
-    const { imdbID } = recentMovie;
-    const target = container?.querySelector(`[data-key="${imdbID}"]`);
-    if (target) {
-      target.scrollIntoView({
-        behavior: "smooth", // Smooth scrolling
-        block: "center", // Align in the center
-      });
-    }
-  };
-
   // every time the component is re-rendered this will scroll the container to required element
   useEffect(() => {
-    smoothScrolling();
+    smoothScrolling(containerRef, recentMovie);
   }, [recentMovie]);
 
   if (isEmpty(moviesHistory)) {
@@ -46,7 +37,6 @@ const History = () => {
 
   return (
     <div className="mx-auto w-full max-w-md rounded-lg border bg-white p-4 shadow-lg">
-      {/* Title */}
       <div className="mb-4 flex items-center justify-between">
         <Typography className="text-xl font-bold" style="h1">
           {t("history.viewHistory")}
@@ -59,22 +49,26 @@ const History = () => {
           {t("history.clearAll.name")}
         </Button>
       </div>
-      {/* Scrollable Container */}
+      {/* Scrollable Container and history items*/}
       <div className="h-screen space-y-3 overflow-y-auto" ref={containerRef}>
-        {moviesHistory.map(item => {
-          const { imdbID, Title } = item;
+        {moviesHistory.map(movie => {
+          const { imdbID, Title: title } = movie;
+          const { imdbID: imdbIDRecentMovie } = recentMovie;
 
           return (
             <div
               data-key={imdbID}
               key={imdbID}
-              className={`flex cursor-pointer items-center justify-between rounded-lg p-4 text-center transition-colors duration-200 ${
-                imdbID === recentMovie.imdbID
-                  ? "bg-selectViewHistory text-white"
-                  : "bg-viewHistory text-black"
-              }`}
+              className={classNames(
+                "flex cursor-pointer items-center justify-between rounded-lg p-4 text-center transition-colors duration-200",
+                {
+                  "bg-selectViewHistory text-white":
+                    imdbID === imdbIDRecentMovie,
+                  "bg-viewHistory text-black": imdbID !== imdbIDRecentMovie,
+                }
+              )}
             >
-              <Typography>{Title}</Typography>
+              <Typography>{title}</Typography>
               <Button
                 className="outline-none items-end bg-transparent"
                 iconSize={24}
@@ -85,15 +79,16 @@ const History = () => {
                 )}
                 onClick={() => setDeleteHistoryAlert(true)}
               />
+              {/*Alert modal for deleting a particular history element */}
               <Alert
                 cancelButtonLabel={t("history.deleteHistory.cancel")}
                 isOpen={deleteHistoryAlert}
-                message={t("history.deleteHistory.message", { title: Title })}
+                message={t("history.deleteHistory.message", { title })}
                 submitButtonLabel={t("history.deleteHistory.confirm")}
                 title={t("history.deleteHistory.title")}
                 onClose={() => setDeleteHistoryAlert(false)}
                 onSubmit={() => {
-                  setRemoveOneMovie({ Title, imdbID });
+                  setRemoveOneMovie({ title, imdbID });
                   setDeleteHistoryAlert(false);
                 }}
               />
@@ -101,6 +96,7 @@ const History = () => {
           );
         })}
       </div>
+      {/* Alert modal for deleting the all history elements at one go. */}
       <Alert
         cancelButtonLabel={t("history.clearAll.cancel")}
         isOpen={clearAllAlert}

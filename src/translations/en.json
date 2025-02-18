@@ -33,15 +33,23 @@
     "series": "Series"
   },
   "favorite": {
-    "rating": "Rating: "
+    "rating": "Rating: <bold>{{rating}}</bold>"
   },
   "brand": {
     "name": "<typography>{{value}}</typography>"
+  },
+  "header": {
+    "home": "Home",
+    "favorite": "Favorites"
   },
   "error": {
     "noMovie": "No movies to show",
     "noFavorite": "No favorite movies to show",
     "noHistory": "No history to show",
-    "invalidYear": "The range of year should be between {{minYear}} and {{maxYear}}"
+    "invalidYear": "The range of year should be between {{minYear}} and {{maxYear}}",
+    "pageNotFound": {
+      "title": "The page you're looking for can't be found",
+      "label": "Back to home"
+    }
   }
 }

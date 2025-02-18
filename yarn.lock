@@ -7301,6 +7301,11 @@ natural-compare@^1.4.0:
   resolved "https://registry.yarnpkg.com/natural-compare/-/natural-compare-1.4.0.tgz#4abebfeed7541f2c27acfb29bdbbd15c8d5ba4f7"
   integrity sha512-OWND8ei3VtNC9h7V60qff3SVobHr996CTwgxubgyQYEpg290h9J0buyECNNJexkFm5sOajh5G116RYA1c8ZMSw==
 
+neeto-commons-frontend@1.0.8:
+  version "1.0.8"
+  resolved "https://registry.yarnpkg.com/neeto-commons-frontend/-/neeto-commons-frontend-1.0.8.tgz#6362d37022561037c4021c7a3eabfd6e9c1f11ff"
+  integrity sha512-SpqXLg0whiHLAlMkNPNz7eAp5mE8KO9z12r3EJlMavr6xEPzyW2Gq3RttoXU7oj0AHEbbtj/4hO3nl8v90EdlQ==
+
 negotiator@0.6.3:
   version "0.6.3"
   resolved "https://registry.yarnpkg.com/negotiator/-/negotiator-0.6.3.tgz#58e323a72fedc0d6f9cd4d31fe49f51479590ccd"

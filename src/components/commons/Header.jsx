@@ -1,20 +1,19 @@
 import classNames from "classnames";
 import { Button, Typography } from "neetoui";
-import { Trans } from "react-i18next";
+import { Trans, useTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
 import { routes } from "routes";
 
+import { BRAND, NAVLINKS } from "./constants";
+
 const Header = ({ activeTab }) => {
-  const brand = [
-    { color: "text-blue-600", value: "Cine" },
-    { color: "text-black", value: "Searcher" },
-  ];
+  const { t } = useTranslation();
 
   return (
     <div className="sticky top-0 flex w-full items-center justify-between bg-white p-4 shadow-md">
       {/* Logo */}
       <div className="text-xl font-bold">
-        {brand.map(({ color, value }) => (
+        {BRAND.map(({ color, value }) => (
           <Trans
             i18nKey="brand.name"
             key={value}
@@ -25,30 +24,20 @@ const Header = ({ activeTab }) => {
           />
         ))}
       </div>
-      {/* Navigation Tabs */}
       <div className="ml-10 flex flex-grow space-x-6">
-        <Link to={routes.home}>
-          <Button
-            style="link"
-            className={classNames("text-lg", {
-              "font-bold text-blue-600": activeTab === "Home",
-              "text-gray-700": activeTab !== "Home",
-            })}
-          >
-            Home
-          </Button>
-        </Link>
-        <Link to={routes.favorite}>
-          <Button
-            style="link"
-            className={classNames("text-lg", {
-              "font-bold text-blue-600": activeTab === "Favorites",
-              "text-gray-700": activeTab !== "Favorites",
-            })}
-          >
-            Favorites
-          </Button>
-        </Link>
+        {NAVLINKS.map(({ value }, index) => (
+          <Link key={index} to={routes[value]}>
+            <Button
+              style="link"
+              className={classNames("text-lg", {
+                "font-bold text-blue-600": activeTab === t(`header.${value}`),
+                "text-gray-700": activeTab !== t(`header.${value}`),
+              })}
+            >
+              {t(`header.${value}`)}
+            </Button>
+          </Link>
+        ))}
       </div>
     </div>
   );
