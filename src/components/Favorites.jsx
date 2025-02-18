@@ -18,7 +18,7 @@ const Favorites = () => {
         )}
         {favoriteMovies.map(({ imdbID, title, imdbRating }) => (
           <div
-            className="mb-4 flex items-center justify-between rounded-lg bg-gray-100 p-4 shadow-sm"
+            className="w-90 mb-4 flex items-center justify-between rounded-lg border-b-2 border-l-8 border-r-2 border-t-2 border-gray-200 bg-white p-4 shadow-sm "
             key={imdbID}
           >
             <Typography className="text-left font-bold">{title}</Typography>
