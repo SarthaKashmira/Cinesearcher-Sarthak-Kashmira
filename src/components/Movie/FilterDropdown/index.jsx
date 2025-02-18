@@ -26,6 +26,7 @@ const FilterDropdown = () => {
 
   const queryParams = useQueryParams();
   const { type, searchTerm } = queryParams;
+
   const filterTypes = [
     { id: "movie", label: t("labels.movie") },
     { id: "series", label: t("labels.series") },

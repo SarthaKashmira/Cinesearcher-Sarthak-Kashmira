@@ -2,7 +2,7 @@ import { useState, useEffect, useRef } from "react";
 
 import { Header, PageLoader, PageNotFound } from "components/commons";
 import ViewHistory from "components/History";
-import MovieCard from "components/Movie/Card";
+import Card from "components/Movie/Card";
 import FilterDropdown from "components/Movie/FilterDropdown";
 import { useFetchMovies } from "hooks/reactQuery/useFetchMovies";
 import useFuncDebounce from "hooks/useFuncDebounce";
@@ -10,7 +10,7 @@ import useQueryParams from "hooks/useQueryParams";
 import { filterNonNull } from "neetocist";
 import { Search } from "neetoicons";
 import { Input, Pagination } from "neetoui";
-import { mergeLeft } from "ramda";
+import { isEmpty, mergeLeft } from "ramda";
 import { useTranslation } from "react-i18next";
 import { useHistory } from "react-router-dom";
 import { routes } from "routes";
@@ -21,6 +21,7 @@ import { DEFAULT_PAGE_SIZE, DEFAULT_PAGE_NUMBER } from "./constants";
 const List = () => {
   // useHistory Api for changing the urls as per the query params
   const [searchKey, setSearchKey] = useState("");
+  const [currentPage, setCurrentPage] = useState(DEFAULT_PAGE_NUMBER);
 
   // using useRef here for referring to the input field
   const inputRef = useRef(null);
@@ -45,14 +46,17 @@ const List = () => {
   const updateQueryParams = useFuncDebounce(value => {
     const params = {
       ...queryParams,
-      page: DEFAULT_PAGE_NUMBER,
+      page: isEmpty(value) ? null : DEFAULT_PAGE_NUMBER,
       searchTerm: value || null,
     };
+
+    setCurrentPage(DEFAULT_PAGE_NUMBER);
     history.replace(buildUrl(routes.home, filterNonNull(params)));
   });
 
   // to handle the update of query params when page changes
   const handlePageNavigation = page => {
+    setCurrentPage(page);
     history.replace(buildUrl(routes.home, mergeLeft({ page }, queryParams)));
   };
 
@@ -107,9 +111,8 @@ const List = () => {
                     {movies?.Search?.map(movie => {
                       const { imdbID } = movie;
 
-                      return <MovieCard key={imdbID} movie={movie} />;
+                      return <Card key={imdbID} movie={movie} />;
                     })}
-                    {movies?.Actors && <MovieCard movie={movies} />}
                   </div>
                 )}
               </div>
@@ -119,7 +122,7 @@ const List = () => {
             <Pagination
               count={movies.totalResults}
               navigate={handlePageNavigation}
-              pageNo={page || DEFAULT_PAGE_NUMBER}
+              pageNo={currentPage || DEFAULT_PAGE_NUMBER}
               pageSize={DEFAULT_PAGE_SIZE}
             />
           </div>
