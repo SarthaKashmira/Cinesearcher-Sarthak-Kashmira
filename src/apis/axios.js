@@ -1,3 +1,5 @@
+import { OMDB_API_KEY, OMDB_API_URL } from "constants/axios";
+
 import axios from "axios";
 import { keysToCamelCase, serializeKeysToSnakeCase } from "neetocist";
 import { evolve } from "ramda";
@@ -7,6 +9,10 @@ const setHttpHeaders = () => {
     Accept: "application/json",
     "Content-Type": "application/json",
   };
+};
+
+const setDefaultParams = () => {
+  axios.defaults.params = { apikey: OMDB_API_KEY };
 };
 
 const transformResponseKeysToCamelCase = response => {
@@ -33,8 +39,9 @@ const requestInterceptors = () => {
 };
 
 export default function initializeAxios() {
-  axios.defaults.baseURL = process.env.REACT_APP_OMDB_API_KEY;
+  axios.defaults.baseURL = OMDB_API_URL;
   setHttpHeaders();
-  responseInterceptors();
+  setDefaultParams();
   requestInterceptors();
+  responseInterceptors();
 }

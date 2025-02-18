@@ -58,21 +58,28 @@ const FilterDropdown = () => {
   const handleYearValidation = ({ target: { value } }) => {
     if (validateYear(value)) {
       setYearError("");
+      handleYearChange(value);
     } else {
       setYearError(
         t("error.invalidYear", { minYear: MIN_YEAR, maxYear: MAX_YEAR })
       );
     }
-    handleYearChange(value);
     setYear(value);
   };
 
   useEffect(() => {
-    if (!queryParams.type && searchTerm) {
+    if (!type && searchTerm && selectedTypes.length === 1) {
       history.replace(
         buildUrl(routes.home, {
           ...queryParams,
-          type: DEFAULT_TYPES.join(","),
+          type: selectedTypes.join(","),
+        })
+      );
+    } else {
+      history.replace(
+        buildUrl(routes.home, {
+          ...queryParams,
+          type: undefined,
         })
       );
     }
