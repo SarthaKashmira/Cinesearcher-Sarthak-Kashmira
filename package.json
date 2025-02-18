@@ -191,5 +191,10 @@
       "react-app",
       "@bigbinary/neeto"
     ]
+  },
+  "engines": {
+    "node": "18.12",
+    "npm": "9.x",
+    "yarn": "1.22.x"
   }
 }
