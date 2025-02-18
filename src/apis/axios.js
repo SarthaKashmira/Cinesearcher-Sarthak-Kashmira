@@ -11,10 +11,6 @@ const setHttpHeaders = () => {
   };
 };
 
-const setWithCredentials = () => {
-  axios.defaults.withCredentials = true;
-};
-
 const setDefaultParams = () => {
   axios.defaults.params = { apikey: OMDB_API_KEY };
 };
@@ -45,7 +41,6 @@ const requestInterceptors = () => {
 export default function initializeAxios() {
   axios.defaults.baseURL = OMDB_API_URL;
   setHttpHeaders();
-  setWithCredentials();
   setDefaultParams();
   requestInterceptors();
   responseInterceptors();
