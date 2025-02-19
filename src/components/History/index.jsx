@@ -22,6 +22,11 @@ const History = () => {
   const { moviesHistory, recentMovie, setRemoveOneMovie, setRemoveAllMovies } =
     useViewMoviesHistoryStore.pick();
 
+  const handleDeleteHistoryButton = movieToRemove => {
+    setRemoveOneMovie(movieToRemove);
+    setDeleteHistoryAlert(false);
+  };
+
   // every time the component is re-rendered this will scroll the container to required element
   useEffect(() => {
     smoothScrolling(containerRef, recentMovie);
@@ -87,10 +92,7 @@ const History = () => {
                 submitButtonLabel={t("history.deleteHistory.confirm")}
                 title={t("history.deleteHistory.title")}
                 onClose={() => setDeleteHistoryAlert(false)}
-                onSubmit={() => {
-                  setRemoveOneMovie({ title, imdbID });
-                  setDeleteHistoryAlert(false);
-                }}
+                onSubmit={() => handleDeleteHistoryButton({ title, imdbID })}
               />
             </div>
           );

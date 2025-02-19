@@ -32,6 +32,11 @@ const MovieModal = ({ isOpen, movie, setIsOpen }) => {
     imdbRating,
   } = movieInformation;
 
+  const isFavoriteMovie = checkFavoriteMovie(
+    { imdbID, title, imdbRating },
+    favoriteMovies
+  );
+
   if (isLoading) {
     return (
       <Modal isOpen={isOpen} size="large" onClose={() => setIsOpen(false)}>
@@ -51,24 +56,12 @@ const MovieModal = ({ isOpen, movie, setIsOpen }) => {
           </Typography>
           <Button
             className="ml-4 rounded px-2 py-1 text-sm"
+            icon={() => (isFavoriteMovie ? <RatingFilled /> : <Rating />)}
             style="link"
-            icon={() =>
-              checkFavoriteMovie(
-                { imdbID, title, imdbRating },
-                favoriteMovies
-              ) ? (
-                <RatingFilled />
-              ) : (
-                <Rating />
-              )
-            }
             tooltipProps={{
               followCursor: "horizontal",
               position: "top",
-              content: checkFavoriteMovie(
-                { imdbID, title, imdbRating },
-                favoriteMovies
-              )
+              content: isFavoriteMovie
                 ? t("modal.removeFavorite")
                 : t("modal.addFavorite"),
             }}

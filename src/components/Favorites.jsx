@@ -13,6 +13,9 @@ const Favorites = () => {
     <>
       <Header activeTab="Favorites" />
       <div className="max-h-[70vh] overflow-y-auto p-6">
+        {/* Guard clause needs to be here as it should be shown in favorite movie section
+        otherwise it hides header section */}
+
         {isEmpty(favoriteMovies) && (
           <NoDataShow description={t("error.noFavorite")} />
         )}

@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 import useQueryParams from "hooks/useQueryParams";
 import { filterNonNull } from "neetocist";
@@ -28,7 +28,7 @@ const FilterDropdown = () => {
   const history = useHistory();
 
   const queryParams = useQueryParams();
-  const { type, searchTerm } = queryParams;
+  const { type } = queryParams;
 
   const selectedTypes = !type ? DEFAULT_TYPES : type.split(",");
 
@@ -71,17 +71,6 @@ const FilterDropdown = () => {
 
     setYear(value);
   };
-
-  useEffect(() => {
-    if (searchTerm && selectedTypes.length === 1) {
-      history.replace(
-        buildUrl(routes.home, {
-          ...queryParams,
-          type: selectedTypes[0],
-        })
-      );
-    }
-  }, []);
 
   return (
     <Dropdown

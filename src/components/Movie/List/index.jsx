@@ -59,6 +59,11 @@ const List = () => {
     history.replace(buildUrl(routes.home, mergeLeft({ page }, queryParams)));
   };
 
+  const handleInputChange = ({ target: { value } }) => {
+    setSearchKey(value);
+    updateQueryParams(value);
+  };
+
   useEffect(() => {
     const handleKeyPress = event => {
       if (event.key === "/") {
@@ -90,15 +95,12 @@ const List = () => {
                   ref={inputRef}
                   type="search"
                   value={searchKey}
-                  onChange={({ target: { value } }) => {
-                    setSearchKey(value);
-                    updateQueryParams(value);
-                  }}
+                  onChange={handleInputChange}
                 />
                 <FilterDropdown />
               </div>
               <div className="mx-auto flex max-w-6xl items-center justify-center">
-                {!movies.Search || isEmpty(searchKey) ? (
+                {isEmpty(movies.Search) || isEmpty(searchKey) ? (
                   <NoDataShow description={t("error.noMovie")} />
                 ) : (
                   <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
